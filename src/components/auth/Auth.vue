@@ -34,7 +34,6 @@
          }
      },
      methods: {
-         make_base_auth(user, password) { var tok = user + ':' + password; return ("Basic " + btoa(tok)); },
          signin() {
              console.log(this.user)
              this.user.token = "Basic " + btoa(this.user.email+ ":" + this.user.password);
@@ -48,9 +47,15 @@
              })
                 .then(res => {
                     axios.defaults.headers.common['Authorization'] = this.user.token;
-                    this.$store.commit('setUser', this.user.token)
+                    res.data.token = this.user.token
+                    console.log(res.data)
+                    this.$store.commit('setUser', res.data)
                     localStorage.setItem(userKey, JSON.stringify(this.user.token))
-                    this.$router.push({ path: '/admin'})
+                    if(res.data.admin){
+                        this.$router.push({ path: '/admin'})
+                    } else {
+                        this.$router.push({ path: '/'})
+                    }
                 })
                 .catch(() => {
                     this.user.token = "";

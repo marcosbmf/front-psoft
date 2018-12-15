@@ -52,7 +52,8 @@ export default {
              })
 
             if(res.data) {
-                this.$store.commit('setUser', userData)
+                res.data.acessToken = userData;
+                this.$store.commit('setUser', res.data)
             } else {
                 localStorage.removeItem(userKey)
                 this.$router.push({ name: 'auth'})

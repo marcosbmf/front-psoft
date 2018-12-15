@@ -19,8 +19,7 @@ const routes = [{
 }, {
     name: 'adminPages',
     path: '/admin',
-    component: AdminPages,
-    meta: {requiresAdmin: true }
+    component: AdminPages
 }]
 
 const router = new VueRouter({

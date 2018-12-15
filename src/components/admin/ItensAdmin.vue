@@ -70,16 +70,15 @@
 </template>
 
 <script>
-import { baseApiUrl, showError } from '@/global'
-const axios = require("axios");
+import { baseApiUrl, showError, axios} from '@/global'
 
 function _isNew(produto, produtos){
     for (let x in produtos){
         if (x.codBarra == produto.codBarra){
-            return true;
+            return false;
         }
     }
-    return false; 
+    return true; 
 }
 
 export default {
@@ -89,7 +88,7 @@ export default {
             mode: 'save',
             produto: {},
             produtos: [],
-            tiposProduto: [{text: "medicamento", id:1}, {text: "alimento", id:2}, {text: "higiene", id:3}, {text: "cosmetico", id:4}],
+            tiposProduto: [{text: "medicamento", id:1}, {text: "alimento", id:2}, {text: "higiene pessoal", id:3}, {text: "cosmetico", id:4}],
             fields: [
                 { key: 'nome', label: 'Nome', sortable: true},
                 { key: 'tipo', label: 'Categoria', sortable: true},
@@ -109,7 +108,7 @@ export default {
         loadItens() {
 
             this.produtos = [];
-            axios.get("https://farmacia-cg.herokuapp.com/produtos").then(res => {
+            axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
                     this.produtos.push(data.produto);
                 })
@@ -127,8 +126,8 @@ export default {
         save() {
             if (_isNew(this.produto, this.produtos)){
                 axios({
-                    method: "put",
-                    url: "https://farmacia-cg.herokuapp.com/produtos",
+                    method: "post",
+                    url: "https://farmacia-cg.herokuapp.com/admin/produtos",
                     data: this.produto
                  }).then(() => {
                      alert("Cadastro realizado com sucesso")
@@ -136,8 +135,8 @@ export default {
                      });
             } else {
                 axios({
-                    method: "post",
-                    url: "https://farmacia-cg.herokuapp.com/produtos/" + this.produto.codBarra,
+                    method: "put",
+                    url: "https://farmacia-cg.herokuapp.com/admin/produtos/" + this.produto.codBarra,
                     data: this.produto
                  }).then(() => {
                          alert("Alteração realizada!")

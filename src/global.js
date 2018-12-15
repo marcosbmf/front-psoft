@@ -2,7 +2,7 @@ import Vue from 'vue'
 
 
 export const axios = require('axios')
-export const userKey = '__ccc_user'
+export const userKey = 'acessToken'
 export const baseApiUrl = 'https://farmacia-cg.herokuapp.com/'
 
 
