@@ -13,17 +13,12 @@
                 icon="fa fa-sellsy" color="aqua" />
         </div> -->
 
-        <Itens></Itens>
-
         <Search />
 
     </div>
 </template>
 
 <script>
-
-import Itens from '../template/Itens'
-
 import Search from '../template/Search'
 
 import PageTitle from '../template/PageTitle'
@@ -35,7 +30,7 @@ import { baseApiUrl } from '@/global'
 export default {
     name: 'Home',
 
-    components: { PageTitle, Stat, Search, Itens},
+    components: { PageTitle, Stat, Search},
     
 }
 </script>
