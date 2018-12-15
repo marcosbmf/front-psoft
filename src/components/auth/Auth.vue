@@ -4,8 +4,8 @@
             <img src="@/assets/joy.png" width="200" alt="Logo" />
            <div class="auth-title">{{ showSignup ? 'Cadastro' : 'Login' }}</div>
 
-            <input v-if="showSignup" v-model="user.name" type="text" placeholder="Nome">
-            <input v-model="user.email" name="email" type="text" placeholder="E-mail">
+            <input v-model="user.name" type="text" placeholder="Nome">
+            <input v-if="showSignup" v-model="user.email" name="email" type="text" placeholder="E-mail">
             <input v-model="user.password" name="password" type="password" placeholder="Senha">
             <input v-if="showSignup" v-model="user.confirmPassword"
                 type="password" placeholder="Confirme a Senha">
@@ -64,14 +64,22 @@
          },
          signup() {
             console.log(this.user)
-            axios.post(`${baseApiUrl}/signup`, this.user)
-                .then(() => {
-                    this.$toasted.global.defaultSuccess()
-                    this.user = {}
-                    this.showSignup = false
-                })
-                .catch(showError)
-        }
+            if (this.user.confirmPassword === this.user.password) {
+                let newUser = {username: null, password: null, admin: false}
+                newUser.username = this.user.name
+                newUser.password = this.user.password
+                console.log(newUser)
+                axios.post(`${baseApiUrl}public/conta`, newUser)
+                    .then(() => {
+                        this.$toasted.global.defaultSuccess()
+                        this.user = {}
+                        this.showSignup = false
+                    })
+                    .catch(showError)
+            } else {
+                this.$toasted.global.defaultError({msg: `Senhas não conferem!`})
+            }
+      }
         
      } 
 
