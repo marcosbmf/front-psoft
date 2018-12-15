@@ -53,8 +53,7 @@
 </template>
 
 <script>
-import { baseApiUrl, showError } from '@/global'
-const axios = require("axios");
+import { baseApiUrl, showError, axios} from '@/global'
 
 export default {
     nome:'LotesAdmin',
@@ -62,15 +61,13 @@ export default {
         return {
             mode: 'save',
             lote: {},
-            lotes: [{numero: "1", validade: "01/02/2019", qinicial: 5, qvendida: 0, codbarra: "111"},
-                    {numero: "2", validade: "01/02/2019", qinicial: 7, qvendida: 0, codbarra: "110"},
-                    {numero: "3", validade: "01/02/2019", qinicial: 9, qvendida: 0, codbarra: "111"}],
+            lotes: [],
             fields: [
-                { key: 'numero', label: 'Número', sortable: true},
-                { key: 'validade', label: 'Validade', sortable: true},
-                { key: 'qinicial', label: 'Quantidade Inicial', sortable: true},
-                { key: 'qvendida', label: 'Quantidade Vendida', sortable: true},
-                { key: 'codbarra', label: 'Produto referido', sortable: true},
+                { key: 'numeroLote', label: 'Número', sortable: true},
+                { key: 'dataValidade', label: 'Validade', sortable: true},
+                { key: 'quantidadeInicial', label: 'Quantidade Inicial', sortable: true},
+                { key: 'quantidadeVendida', label: 'Quantidade Vendida', sortable: true},
+                { key: 'produto.codBarra', label: 'Produto referido', sortable: true},
                 { key: 'actions', label: 'Ações'}
 
             ]
@@ -78,9 +75,12 @@ export default {
     },
     methods: {
         loadLotes() {
-            
-            return this.lotes;
-
+            this.lotes = [];
+            axios.get("https://farmacia-cg.herokuapp.com/admin/produtos/-1/lotes").then(res => {
+                res.data.forEach((data) => {
+                    this.lotes.push(data);
+                })
+            });
         },
 
         reset() {
@@ -91,12 +91,12 @@ export default {
         },
 
         save() {
-            axios.get(`https://farmacia-cg.herokuapp.com/produtos/` + this.lote.codBarra).then(res => {
+            axios.get(`https://farmacia-cg.herokuapp.com/public/produtos/` + this.lote.codBarra).then(res => {
                 this.lote.produto = res.data.produto;
             }).then(() => {
                 axios({
-                        method: "put",
-                        url: `https://farmacia-cg.herokuapp.com/produtos/${this.lote.codBarra}/lote`,
+                        method: "post",
+                        url: `https://farmacia-cg.herokuapp.com/admin/produtos/${this.lote.codBarra}/lotes`,
                         data: this.lote
                     }).then(() => {
                         alert("Cadastro de lote realizado com sucesso")
