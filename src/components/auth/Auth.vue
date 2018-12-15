@@ -36,7 +36,7 @@
      methods: {
          signin() {
              console.log(this.user)
-             this.user.token = "Basic " + btoa(this.user.email+ ":" + this.user.password);
+             this.user.token = "Basic " + btoa(this.user.name+ ":" + this.user.password);
              axios({
                  
                  url: `${baseApiUrl}protected/conta`,
