@@ -1,0 +1,5 @@
+[
+    {"nome": "pasta", "codigo": "110", "fabricante": "jj", "situacao": "tem", "categoria": "higiene", "preco": "5,30"},
+    {"nome": "dorflex", "codigo": "111", "fabricante": "jj", "situacao": "tem", "categoria": "medicamento", "preco": "66,30"},
+    {"nome": "cheetos", "codigo": "112", "fabricante": "jj", "situacao": "tem", "categoria": "alimentos" , "preco": "0,30"}
+]

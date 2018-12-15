@@ -1,0 +1,3 @@
+[{"nome": "pasta", "situacao": "tem",  "preco": "5,30", "tipo": "higiene"},
+    {"nome": "dorflex",  "situacao": "tem",  "preco": "66,30", "tipo": "medicamento"},
+    {"nome": "cheetos", "situacao": "tem", "preco": "0,30", "tipo": "comida"}]
