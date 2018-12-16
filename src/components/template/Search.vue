@@ -46,7 +46,6 @@ import fz from 'fuzzaldrin-plus';
 import Prods from './prod.json';
 import { baseApiUrl, showError } from '@/global'
 const axios = require("axios");
-
 export default {
     name: 'Search',
     data: function() {
@@ -169,11 +168,9 @@ export default {
     input {
         width: 20%;
     }
-
     .pedido {
         grid-column-start: 1;
         grid-column-end: 2;
         width: 160px;
     }
-
 </style>
