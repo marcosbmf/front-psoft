@@ -150,7 +150,7 @@ export default {
         remove() {
             axios({
                 method: 'DELETE',
-                url: "https://farmacia-cg.herokuapp.com/produtos/" + this.produto.codBarra
+                url: "https://farmacia-cg.herokuapp.com/admin/produtos/" + this.produto.codBarra
             }).then(() => {
                          alert("Remoção realizada!")
                          this.reset();

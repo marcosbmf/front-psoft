@@ -4,7 +4,7 @@
     <li v-for="produto in faltantes" :key="produto">
     {{ produto}}
   </li>
-  <div> Produtos Vencidos</div>
+  <div> Produtos Com lotes Vencidos ou proximos do vencimento</div>
     <li v-for="produto in vencidos" :key="produto">
     {{ produto}}
   </li>
@@ -42,23 +42,21 @@ export default {
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
                     data.produto.quantidadeDisponivel = data.quantidadeDisponivel;
-                               this.produtos.push(data.produto);
+                    this.produtos.push(data.produto);
                 })
-            });
-            
+            }).then(() =>{
+                this.avisaFalta()
+                })
         },
+
          avisaFalta() {
-             console.log(this.produtos.length)
              
              this.produtos.forEach(produto => {
-                console.log("entrou aki")
-                console.log(produto)
-                if(quantidadeDisponivel <= 15) {
-                    
-                    this.faltantes.push(nome)
+                if(produto.quantidadeDisponivel <= 15) {
+                    this.faltantes.push(produto.nome)
                 }
-                if(vencimentoProximo) {
-                    this.vencidos.push(nome)
+                if(produto.vencimentoProximo) {
+                    this.vencidos.push(produto.nome)
                 }
 
             }) 
@@ -67,8 +65,7 @@ export default {
     },
     mounted() {
         this.loadItens()
-        this.avisaFalta()
-    } 
+    }
 
 }
 </script>
