@@ -17,7 +17,7 @@
                 <tr class="cursor" @click="addTableRow(result)" v-for="result in queryResults" :key="result.nome">
                     <td>{{result.produto.nome}}</td>
                     <td>{{result.quantidadeDisponivel}}</td>
-                    <td>{{result.produto.preco}}</td>
+                    <td>{{result.precoPromocional}}</td>
                     <td>{{result.produto.tipo}}</td>
                 </tr>
             </tbody>
@@ -97,6 +97,9 @@ export default {
             this.produtos = [];
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
+                    if(data.quantidadeDisponivel == 0){
+                        data.precoPromocional = "Indisponível";
+                    }
                     this.produtos.push(data);
                 })
             });

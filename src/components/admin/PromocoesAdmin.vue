@@ -68,8 +68,8 @@ export default {
         return {
             mode: 'save',
             tipo: "Sem desconto",
-            tiposDesconto:[{text: "bom desconto", id:1}, {text: "otimo desconto", id:2}, {text: "super desconto", id:3}],
-            tiposProduto: [{text: "medicamento", id:1}, {text: "alimento", id:2}, {text: "higiene", id:3}, {text: "cosmetico", id:4}],
+            tiposDesconto:[{text: "Bom desconto", id:1}, {text: "Ótimo desconto", id:2}, {text: "Super desconto", id:3}],
+            tiposProduto: [{text: "medicamento", id:1}, {text: "alimento", id:2}, {text: "higiene pessoal", id:3}, {text: "cosmético", id:4}],
             promocao: {},
             promocoes: [],
             fields: [
@@ -101,11 +101,14 @@ export default {
 
         save() {
             axios({
-                    method: "put",
+                    method: "post",
                     url: "https://farmacia-cg.herokuapp.com/admin/promocoes",
                     data: this.promocao
                  }).then(() => {
                      alert("Promoção cadastrada com sucesso!")
+                     this.reset();
+                 }).catch(() => {
+                     alert("Ocorreu algum erro no cadastro!")
                      this.reset();
                  });
         },

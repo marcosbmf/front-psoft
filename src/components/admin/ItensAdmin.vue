@@ -90,7 +90,7 @@ export default {
             produtos: [],
             vencidos: [],
             faltantes: [],
-            tiposProduto: [{text: "medicamento", id:1}, {text: "alimento", id:2}, {text: "higiene pessoal", id:3}, {text: "cosmetico", id:4}],
+            tiposProduto: [{text: "medicamento", id:1}, {text: "alimento", id:2}, {text: "higiene pessoal", id:3}, {text: "cosmético", id:4}],
             fields: [
                 { key: 'nome', label: 'Nome', sortable: true},
                 { key: 'tipo', label: 'Categoria', sortable: true},
