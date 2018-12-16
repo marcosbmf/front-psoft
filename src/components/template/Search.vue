@@ -33,8 +33,11 @@
                     </tr>
                 </tbody>
             </table>
-            <button @click="venda" v-if="aparece">Comprar</button>
-        </div>		
+            <b-button @click="venda" v-if="aparece">Comprar</b-button>
+        </div>
+        <router-link to="/pedidos">
+            <b-button class="pedido">Visualizar Pedidos</b-button>
+        </router-link>		
     </div>
 </template>
 
@@ -166,4 +169,11 @@ export default {
     input {
         width: 20%;
     }
+
+    .pedido {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        width: 160px;
+    }
+
 </style>
