@@ -1,14 +1,14 @@
 <template>
     <header class="header">
-        
-        <a class="toggle" @click="toggleMenu" v-if="!hideToggle">
-            <i class="fa fa-lg" :class="icon"></i>
-        </a>
         <div>
             <b-btn v-b-modal.modal1 id="modal1">Ítens disponíveis</b-btn>
-                <b-modal id="modal1" title="Ítens disponíveis para compra">
+                <b-modal id="modal1">
+                    <h1 class="title1">Ítens disponíveis para compra</h1>
                     <b-table hover striped :items="produtos" :fields="fields"></b-table>
+                    <h1 class="title1">Ítens faltantes</h1>
+                    <b-table hover striped :items="faltantes" :fields="fields"></b-table>
                 </b-modal>
+                    
         </div>
         <h1 class="title">
             <router-link to="/">{{ title }}</router-link>
@@ -20,22 +20,19 @@
 
 <script>
 import UserDropdown from './UserDropdown'
+import { baseApiUrl, showError, axios} from '@/global'
 
 export default {
     name: 'Header',
     components: { UserDropdown },
     data: function() {
         return {
-            mode: 'save',
-            produto: {},
-            produtos: [{nome: "pasta", situacao: "tem",  preco: "5,30"},
-                    {nome: "dorflex",  situacao: "tem",  preco: "66,30"},
-                    {nome: "cheetos", situacao: "tem", preco: "0,30"}],
+            produtos: [],
+            faltantes: [],
             fields: [
                 { key: 'nome', label: 'Nome', sortable: true},
-                { key: 'situacao', label: 'Situação', sortable: true},
                 { key: 'preco', label: 'Preço', sortable: true},
-                { key: 'actions', label: 'Ações'}
+            
 
             ]
         }
@@ -55,8 +52,22 @@ export default {
             this.$store.commit('toggleMenu')
         },
         showModal() {
-
+            this.produtos = [];
+            axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
+                res.data.forEach((data) => {
+                    
+                    if(data.quantidadeDisponivel > 15) {
+                    this.produtos.push(data.produto)
+                    }
+                    else {
+                        this.faltantes.push(data.produto)
+                    }
+                })
+            })
         }
+    },
+    mounted() {
+        this.showModal()
     }
 }
 </script>
@@ -108,6 +119,11 @@ export default {
     #modal1 {
 
         background: linear-gradient(to right, #1e469a, #49a7c1);
+        width: -webkit-fill-available;
+    }
+
+    .title1{ 
+        font-size: 1.5rem;
     }
 
 

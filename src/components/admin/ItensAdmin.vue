@@ -132,7 +132,7 @@ export default {
                     url: "https://farmacia-cg.herokuapp.com/admin/produtos",
                     data: this.produto
                  }).then(() => {
-                     alert("Cadastro realizado com sucesso")
+                      this.$toasted.global.defaultSuccess({msg: "Cadastro realizado com sucesso"})
                      this.reset();
                      });
             } else {
@@ -141,7 +141,7 @@ export default {
                     url: "https://farmacia-cg.herokuapp.com/admin/produtos/" + this.produto.codBarra,
                     data: this.produto
                  }).then(() => {
-                         alert("Alteração realizada!")
+                         this.$toasted.global.defaultSuccess({msg: "Alteração realizada!"})
                          this.reset();
                  });
             }
@@ -152,7 +152,7 @@ export default {
                 method: 'DELETE',
                 url: "https://farmacia-cg.herokuapp.com/admin/produtos/" + this.produto.codBarra
             }).then(() => {
-                         alert("Remoção realizada!")
+                         this.$toasted.global.defaultSuccess({msg: "Remoção realizada!"})
                          this.reset();
                  });
         },

@@ -10,8 +10,8 @@
             <input v-if="showSignup" v-model="user.confirmPassword"
                 type="password" placeholder="Confirme a Senha">
 
-            <button v-if="showSignup" @click="signup">Registrar</button>
-            <button v-else @click="signin">Entrar</button>
+            <button class="reg" v-if="showSignup" @click="signup">Registrar</button>
+            <button class="reg" v-else @click="signin">Entrar</button>
 
             <a href @click.prevent="showSignup = !showSignup">
                 <span v-if="showSignup">Já tem cadastro? Acesse o Login!</span>
@@ -140,5 +140,10 @@
             rgba(120, 120, 120, 0.75),
             rgba(120, 120, 120, 0));
     }
+
+    .reg {
+        width: auto;
+    }
+    
  </style>
  
