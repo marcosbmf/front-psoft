@@ -73,8 +73,8 @@
 import { baseApiUrl, showError, axios} from '@/global'
 
 function _isNew(produto, produtos){
-    for (let x in produtos){
-        if (x.codBarra == produto.codBarra){
+    for (let i = 0; i < produtos.length; i++){
+        if (produtos[i].codBarra == produto.codBarra){
             return false;
         }
     }

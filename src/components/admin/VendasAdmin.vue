@@ -53,9 +53,7 @@ export default {
         return {
             mode: 'save',
             venda: {},
-            vendas: [{id: "1", produtos: [{codigo: "111", quantidade: 5},{codigo: "110", quantidade: 10}], valorTotal: "5,30"},
-                    {id: "2", produtos: [{codigo: "111", quantidade: 5},{codigo: "110", quantidade: 10}], valorTotal: "5,30"},
-                    {id: "3", produtos: [{codigo: "111", quantidade: 5},{codigo: "110", quantidade: 10}], valorTotal: "5,30"}],
+            vendas: [],
             fields: [
                 { key: 'id', label: 'Id', sortable: true},
                 { key: 'produtos', label: 'Produtos', sortable: true},
