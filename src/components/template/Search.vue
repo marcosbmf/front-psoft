@@ -17,7 +17,7 @@
                 <tr class="cursor" @click="addTableRow(result)" v-for="result in queryResults" :key="result.nome">
                     <td>{{result.produto.nome}}</td>
                     <td>{{result.quantidadeDisponivel}}</td>
-                    <td>{{result.precoPromocional}}</td>
+                    <td>{{result.produto.preco}}</td>
                     <td>{{result.produto.tipo}}</td>
                 </tr>
             </tbody>
@@ -33,7 +33,7 @@
                     </tr>
                 </tbody>
             </table>
-            <button @click="compra" v-if="aparece">Comprar</button>
+            <button @click="venda" v-if="aparece">Comprar</button>
         </div>		
     </div>
 </template>
@@ -42,6 +42,15 @@
 import fz from 'fuzzaldrin-plus';
 import Prods from './prod.json';
 const axios = require("axios");
+
+function existe(array, produto) {
+    for(const i = 0; i < array.lenght; i++) {
+        if(array[i].produto.nome === produto.nome) {
+            return true
+        }
+    }
+}
+
 export default {
     name: 'Search',
     data: function() {
@@ -50,7 +59,8 @@ export default {
             options: Prods,
             aparece: false,
             produtos: [],
-            produtosCompra: []
+            produtosCompra: [],
+            quantity: 0
         }
     },
     methods: {
@@ -58,35 +68,16 @@ export default {
             if(elem.quantidadeDisponivel > 0) {
                 const table = document.getElementById('lista');
                 const newRow = table.insertRow(-1);
-                const but = table.insertRow(-1);
                 const newCell = newRow.insertCell(0);
-                const newCell2 = but.insertCell(0);
                 let newText = document.createTextNode(elem.produto.nome);
                 newCell.appendChild(newText);
-                newCell2.appendChild(newText);
                 this.aparece = true;
-                this.produtosCompra.push(elem);
+                const quantity = prompt("Digite a quantidade que quer comprar: ");
+                this.produtosCompra.push({produto: elem.produto, quantidade: quantity});
             }
             else {
                 alert("Elemento em falta... /:");
             }
-        },
-        diminui(prod) {
-            axios({
-                method: 'PUT'
-            })
-            // axios({
-            //     method: 'DELETE',
-            //     url: "https://farmacia-cg.herokuapp.com/public/produtos/" + prod.produto.codBarra
-            // }).then(() => {
-            //              alert("Remoção realizada!")
-            //              this.reset();
-            //      })
-            // .catch(
-            //     alert("Erro ao deletar produto!")
-            // );
-            // prod.quantidadeDisponivel -= 1;
-            // alert(prod.quantidadeDisponivel);
         },
         compra() {
             this.produtosCompra.forEach(elem => 
@@ -97,13 +88,23 @@ export default {
             this.produtos = [];
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
-                    if(data.quantidadeDisponivel == 0){
-                        data.precoPromocional = "Indisponível";
-                    }
                     this.produtos.push(data);
                 })
             });
         },
+        venda() {
+            console.log(this.produtosCompra[0]),
+            axios({
+                    method: "post",
+                    url: `https://farmacia-cg.herokuapp.com/protected/pedido`,
+                    data: this.produtosCompra
+                }).then(() => {
+                    alert("Cadastro da venda realizado com sucesso")
+                })
+                .catch(() => {
+                    alert("Falha no cadastro da venda")
+                })
+            }
     },
     computed: {
         queryResults() {
