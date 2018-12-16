@@ -43,14 +43,6 @@ import fz from 'fuzzaldrin-plus';
 import Prods from './prod.json';
 const axios = require("axios");
 
-function existe(array, produto) {
-    for(const i = 0; i < array.lenght; i++) {
-        if(array[i].produto.nome === produto.nome) {
-            return true
-        }
-    }
-}
-
 export default {
     name: 'Search',
     data: function() {
@@ -86,6 +78,7 @@ export default {
         },
         loadItens() {
             this.produtos = [];
+            this.produtosCompra = [];
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
                     this.produtos.push(data);
@@ -93,16 +86,17 @@ export default {
             });
         },
         venda() {
-            console.log(this.produtosCompra[0]),
             axios({
                     method: "post",
                     url: `https://farmacia-cg.herokuapp.com/protected/pedido`,
                     data: this.produtosCompra
                 }).then(() => {
                     alert("Cadastro da venda realizado com sucesso")
+                    this.loadItens();
                 })
                 .catch(() => {
                     alert("Falha no cadastro da venda")
+                    this.loadItens();
                 })
             }
     },
