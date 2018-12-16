@@ -1,11 +1,11 @@
 <template>
     <div class="lotes-admin">
         <b-form>
-            <input id="lote-nome" type="hidden" v-model="lote.numero"/>
+            <input id="lote-nome" type="hidden" v-model="lote.numeroLote"/>
             <b-row>
                 <b-col md="6" sm="12">
                     <b-form-group label="Número:" label-for="lote-numero">
-                        <b-form-input id="lote-numero" type="text" v-model="lote.numero" required :readonly="mode === 'remove'" 
+                        <b-form-input id="lote-numero" type="text" v-model="lote.numeroLote" required :readonly="true" 
                         placeholder="Informe o numero do lote..." />
                     </b-form-group>
                 </b-col>
@@ -14,7 +14,7 @@
                 <b-col md="3" sm="2">
                     <b-form-group label="Validade:" label-for="lote-validade">
                         <b-form-input id="lote-validade" type="text" v-model="lote.dataValidade" required :readonly="mode === 'remove'" 
-                        placeholder="Informe a Validade do lote..." />
+                        placeholder="2001-09-08" />
                     </b-form-group>
                 </b-col>
             </b-row>
@@ -28,8 +28,8 @@
             </b-row>
             <b-row>
                 <b-col md="3" sm="2">
-                    <b-form-group label="Código do produto:" label-for="lote-codbarra">
-                        <b-form-input id="lote-codbarra" type="text" v-model="lote.codBarra" required :readonly="mode === 'remove'" 
+                    <b-form-group label="Código do produto:" label-for="lote-codBarra">
+                        <b-form-input id="lote-codBarra" type="text" v-model="lote.produto.codBarra" required :readonly="mode === 'remove'" 
                         placeholder="Informe o Código do produto..." />
                     </b-form-group>
                 </b-col>
@@ -60,7 +60,9 @@ export default {
     data: function() {
         return {
             mode: 'save',
-            lote: {},
+            lote: {
+                produto: {}
+            },
             lotes: [],
             fields: [
                 { key: 'numeroLote', label: 'Número', sortable: true},
@@ -69,7 +71,6 @@ export default {
                 { key: 'quantidadeVendida', label: 'Quantidade Vendida', sortable: true},
                 { key: 'produto.codBarra', label: 'Produto referido', sortable: true},
                 { key: 'actions', label: 'Ações'}
-
             ]
         }
     },
@@ -86,17 +87,19 @@ export default {
         reset() {
             
             this.mode = 'save'
-            this.lote = {}
+            this.lote = {
+                produto: {}
+            }
             this.loadLotes()
         },
 
         save() {
-            axios.get(`https://farmacia-cg.herokuapp.com/public/produtos/` + this.lote.codBarra).then(res => {
+            axios.get(`https://farmacia-cg.herokuapp.com/public/produtos/` + this.lote.produto.codBarra).then(res => {
                 this.lote.produto = res.data.produto;
             }).then(() => {
                 axios({
                         method: "post",
-                        url: `https://farmacia-cg.herokuapp.com/admin/produtos/${this.lote.codBarra}/lotes`,
+                        url: `https://farmacia-cg.herokuapp.com/admin/produtos/${this.lote.produto.codBarra}/lotes`,
                         data: this.lote
                     }).then(() => {
                         alert("Cadastro de lote realizado com sucesso")
@@ -106,14 +109,15 @@ export default {
         },
 
         remove() {
-            this.lotes.forEach(element => { 
-                if(element.numero == this.lote.numero){
-                    this.lotes.splice(this.lotes.indexOf(element), 1);
-                }
-             });
-            this.reset();
-
+            axios({
+                method: 'DELETE',
+                url: `https://farmacia-cg.herokuapp.com/admin/produtos/${this.lote.produto.codBarra}/lotes/${this.lote.numeroLote}`
+            }).then(() => {
+                         alert("Remoção realizada!")
+                         this.reset();
+                 });
         },
+
         loadLote(lote, mode = 'save') {
             this.mode = mode
             this.lote = { ...lote }

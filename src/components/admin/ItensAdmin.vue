@@ -88,6 +88,8 @@ export default {
             mode: 'save',
             produto: {},
             produtos: [],
+            vencidos: [],
+            faltantes: [],
             tiposProduto: [{text: "medicamento", id:1}, {text: "alimento", id:2}, {text: "higiene pessoal", id:3}, {text: "cosmetico", id:4}],
             fields: [
                 { key: 'nome', label: 'Nome', sortable: true},
@@ -158,7 +160,20 @@ export default {
         loadProduto(produto, mode = 'save') {
             this.mode = mode
             this.produto = { ...produto }
+        },
+        avisaFalta() {
+            this.produtos.forEach(produto => {
+                if(!produto.falta) {
+                    this.faltantes.push(produto.nome)
+                }
+                produto.vencidos.forEach(lista => {
+                    this.vencidos.push(lista)
+                })
+
+            })
+            
         }
+        
 
     },
     mounted() {

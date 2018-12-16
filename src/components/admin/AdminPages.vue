@@ -5,7 +5,10 @@
         <div class="admin-pages-tabs">
             <b-card no-body>
                 <b-tabs card>
-                    <b-tab title="Itens" active>
+                    <b-tab title="Avisos" active>
+                        <Avisos/>
+                    </b-tab>
+                    <b-tab title="Itens">
                         <ItensAdmin/>
                     </b-tab>
                     <b-tab title="Lotes">
@@ -29,11 +32,12 @@ import ItensAdmin from './ItensAdmin'
 import LotesAdmin from './LotesAdmin'
 import VendasAdmin from './VendasAdmin'
 import PromocoesAdmin from './PromocoesAdmin'
+import Avisos from './Avisos'
 
 
 export default {
     name: 'AdminPages',
-    components: { PageTitle, ItensAdmin, LotesAdmin, VendasAdmin, PromocoesAdmin }
+    components: { PageTitle, ItensAdmin, LotesAdmin, VendasAdmin, PromocoesAdmin, Avisos }
 }
 </script>
 
