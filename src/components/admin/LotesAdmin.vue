@@ -102,7 +102,7 @@ export default {
                         url: `https://farmacia-cg.herokuapp.com/admin/produtos/${this.lote.produto.codBarra}/lotes`,
                         data: this.lote
                     }).then(() => {
-                        alert("Cadastro de lote realizado com sucesso")
+                        this.$toasted.global.defaultSuccess({msg: "Cadastro de lote realizado com sucesso"})
                         this.reset();
                         })
             });
@@ -113,7 +113,7 @@ export default {
                 method: 'DELETE',
                 url: `https://farmacia-cg.herokuapp.com/admin/produtos/${this.lote.produto.codBarra}/lotes/${this.lote.numeroLote}`
             }).then(() => {
-                         alert("Remoção realizada!")
+                         this.$toasted.global.defaultSuccess({msg: "Remoção Realizada"})
                          this.reset();
                  });
         },

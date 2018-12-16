@@ -1,16 +1,7 @@
 <template>
     <div class="avisos">
-    <div> Produtos Faltantes</div>
-    <li v-for="produto in faltantes" :key="produto">
-    {{ produto}}
-  </li>
-  <div> Produtos Com lotes Vencidos ou proximos do vencimento</div>
-    <li v-for="produto in vencidos" :key="produto">
-    {{ produto}}
-  </li>
-    
-
-
+    <b-table striped hover :items="faltantes" :fields="fields"></b-table>  
+    <b-table striped hover :items="vencidos" :fields="fields2"></b-table>
     </div>
 </template>
 
@@ -21,18 +12,11 @@ export default {
     nome:'Avisos',
     data: function() {
         return {
-            mode: 'save',
-            produto: {},
             produtos: [],
             vencidos: [],
             faltantes: [],
-            fields: [
-                { key: 'nome', label: 'Nome', sortable: true},
-                { key: 'tipo', label: 'Categoria', sortable: true},
-                { key: 'preco', label: 'Preço', sortable: true},
-                { key: 'descricao', label: 'Descrição', sortable: true},
-                { key: 'actions', label: 'Ações'}
-            ]
+            fields: [{ key: 'nome', label: 'Produtos Faltantes', sortable: true}],
+            fields2: [{ key: 'nome', label: 'Produtos com lotes vencidos ou próximos do vencimento', sortable: true}]
         }
     },
     methods: {
@@ -53,10 +37,10 @@ export default {
              
              this.produtos.forEach(produto => {
                 if(produto.quantidadeDisponivel <= 15) {
-                    this.faltantes.push(produto.nome)
+                    this.faltantes.push(produto)
                 }
                 if(produto.vencimentoProximo) {
-                    this.vencidos.push(produto.nome)
+                    this.vencidos.push(produto)
                 }
 
             }) 

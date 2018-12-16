@@ -41,6 +41,7 @@
 <script>
 import fz from 'fuzzaldrin-plus';
 import Prods from './prod.json';
+import { baseApiUrl, showError } from '@/global'
 const axios = require("axios");
 
 export default {
@@ -68,7 +69,7 @@ export default {
                 this.produtosCompra.push({produto: elem.produto, quantidade: quantity});
             }
             else {
-                alert("Elemento em falta... /:");
+                this.$toasted.global.defaultSuccess({msg: "Elemento em falta... /:"});
             }
         },
         compra() {

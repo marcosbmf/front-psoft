@@ -105,16 +105,16 @@ export default {
                     url: "https://farmacia-cg.herokuapp.com/admin/promocoes",
                     data: this.promocao
                  }).then(() => {
-                     alert("Promoção cadastrada com sucesso!")
+                     this.$toasted.global.defaultSuccess({msg: "Promoção cadastrada com sucesso!"})
                      this.reset();
                  }).catch(() => {
-                     alert("Ocorreu algum erro no cadastro!")
+                     this.$toasted.global.defaultSuccess({msg: "Ocorreu algum erro no cadastro!"})
                      this.reset();
                  });
         },
 
         remove() {
-            alert("Impossível remover promoções por hora!");
+            this.$toasted.global.defaultSuccess({msg: "Impossível remover promoções por hora!"});
         },
         
         loadPromocao(promocao, mode = 'save') {
