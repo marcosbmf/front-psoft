@@ -35,9 +35,13 @@
             </table>
             <b-button @click="venda" v-if="aparece">Comprar</b-button>
         </div>
-        <router-link to="/pedidos">
-            <b-button class="pedido">Visualizar Pedidos</b-button>
-        </router-link>		
+        <b-row>
+            <b-col md="3" sm="2">
+                <router-link to="/pedidos" >
+                    <b-button class="pedido" >Visualizar Pedidos</b-button>
+                </router-link>
+            </b-col>
+        </b-row>		
     </div>
 </template>
 
