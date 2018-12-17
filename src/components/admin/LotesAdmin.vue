@@ -69,7 +69,8 @@ export default {
                 { key: 'dataValidade', label: 'Validade', sortable: true},
                 { key: 'quantidadeInicial', label: 'Quantidade Inicial', sortable: true},
                 { key: 'quantidadeVendida', label: 'Quantidade Vendida', sortable: true},
-                { key: 'produto.codBarra', label: 'Produto referido', sortable: true},
+                { key: 'produto.nome', label: 'Produto referido', sortable: true},
+                { key: 'produto.codBarra', label: 'Código de Barras', sortable: true},
                 { key: 'actions', label: 'Ações'}
             ]
         }
