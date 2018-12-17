@@ -57,7 +57,7 @@ export default {
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
                     data.produto.precoPromocional = data.precoPromocional
-                    if(data.quantidadeDisponivel > 15) {
+                    if(data.quantidadeDisponivel > 0) {
                     this.produtos.push(data.produto)
                     }
                     else {
