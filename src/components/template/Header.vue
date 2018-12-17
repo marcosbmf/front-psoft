@@ -31,7 +31,7 @@ export default {
             faltantes: [],
             fields: [
                 { key: 'nome', label: 'Nome', sortable: true},
-                { key: 'preco', label: 'Preço', sortable: true},
+                { key: 'precoPromocional', label: 'Preço', sortable: true},
             
 
             ]
@@ -55,7 +55,7 @@ export default {
             this.produtos = [];
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
-                    
+                    data.produto.precoPromocional = data.precoPromocional
                     if(data.quantidadeDisponivel > 15) {
                     this.produtos.push(data.produto)
                     }
@@ -63,7 +63,7 @@ export default {
                         this.faltantes.push(data.produto)
                     }
                 })
-            })
+            }) 
         }
     },
     mounted() {
