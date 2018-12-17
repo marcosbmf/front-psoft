@@ -1,7 +1,7 @@
 <template>
     <header class="header">
         <div>
-            <b-btn v-b-modal.modal1 id="modal1">Ítens disponíveis</b-btn>
+            <b-btn v-if="hideItens" v-b-modal.modal1 id="modal1">Ítens disponíveis</b-btn>
                 <b-modal id="modal1">
                     <h1 class="title1">Ítens disponíveis para compra</h1>
                     <b-table hover striped :items="produtos" :fields="fields"></b-table>
@@ -40,7 +40,8 @@ export default {
     props: {
         title: String,
         hideToggle: Boolean,
-        hideUserDropdown: Boolean
+        hideUserDropdown: Boolean,
+        hideItens: Boolean
     },
     computed: {
         icon() {
