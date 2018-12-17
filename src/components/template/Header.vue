@@ -1,7 +1,7 @@
 <template>
     <header class="header">
         <div>
-            <b-btn v-b-modal.modal1 id="modal1">Ítens disponíveis</b-btn>
+            <b-btn v-if="hideItens" v-b-modal.modal1 id="modal1">Ítens disponíveis</b-btn>
                 <b-modal id="modal1">
                     <h1 class="title1">Ítens disponíveis para compra</h1>
                     <b-table hover striped :items="produtos" :fields="fields"></b-table>
@@ -31,7 +31,7 @@ export default {
             faltantes: [],
             fields: [
                 { key: 'nome', label: 'Nome', sortable: true},
-                { key: 'preco', label: 'Preço', sortable: true},
+                { key: 'precoPromocional', label: 'Preço', sortable: true},
             
 
             ]
@@ -40,7 +40,8 @@ export default {
     props: {
         title: String,
         hideToggle: Boolean,
-        hideUserDropdown: Boolean
+        hideUserDropdown: Boolean,
+        hideItens: Boolean
     },
     computed: {
         icon() {
@@ -55,7 +56,7 @@ export default {
             this.produtos = [];
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
-                    
+                    data.produto.precoPromocional = data.precoPromocional
                     if(data.quantidadeDisponivel > 15) {
                     this.produtos.push(data.produto)
                     }
@@ -63,7 +64,7 @@ export default {
                         this.faltantes.push(data.produto)
                     }
                 })
-            })
+            }) 
         }
     },
     mounted() {

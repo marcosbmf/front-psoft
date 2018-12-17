@@ -14,12 +14,12 @@
         </div> -->
 
         <Search />
-
     </div>
 </template>
 
 <script>
 import Search from '../template/Search'
+import Pedidos from '../template/Pedidos'
 
 import PageTitle from '../template/PageTitle'
 import Stat from './Stat'
@@ -30,7 +30,7 @@ import { baseApiUrl } from '@/global'
 export default {
     name: 'Home',
 
-    components: { PageTitle, Stat, Search},
+    components: { PageTitle, Stat, Search, Pedidos},
     
 }
 </script>

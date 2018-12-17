@@ -2,6 +2,7 @@
     <div id="app" :class="{'hide-menu': !isMenuVisible || !user}">
         <Header title="CCC PHARMA" 
 			:hideToggle="!user"
+            :hideItens="!user"
 			:hideUserDropdown="!user"/>
         <Content/>
         <Footer />
