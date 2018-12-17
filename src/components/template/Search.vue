@@ -17,7 +17,7 @@
                 <tr class="cursor" @click="addTableRow(result)" v-for="result in queryResults" :key="result.nome">
                     <td>{{result.produto.nome}}</td>
                     <td>{{result.quantidadeDisponivel}}</td>
-                    <td>{{result.produto.preco}}</td>
+                    <td>{{result.precoPromocional}}</td>
                     <td>{{result.produto.tipo}}</td>
                 </tr>
             </tbody>
@@ -33,8 +33,11 @@
                     </tr>
                 </tbody>
             </table>
-            <button @click="venda" v-if="aparece">Comprar</button>
-        </div>		
+            <b-button @click="venda" v-if="aparece">Comprar</b-button>
+        </div>
+        <router-link to="/pedidos">
+            <b-button class="pedido">Visualizar Pedidos</b-button>
+        </router-link>		
     </div>
 </template>
 
@@ -43,7 +46,6 @@ import fz from 'fuzzaldrin-plus';
 import Prods from './prod.json';
 import { baseApiUrl, showError } from '@/global'
 const axios = require("axios");
-
 export default {
     name: 'Search',
     data: function() {
@@ -82,6 +84,8 @@ export default {
             this.produtosCompra = [];
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
+                    if (data.quantidadeDisponivel == 0)
+                        data.precoPromocional = "Indisponível!";
                     this.produtos.push(data);
                 })
             });
@@ -165,5 +169,10 @@ export default {
     }
     input {
         width: 20%;
+    }
+    .pedido {
+        grid-column-start: 1;
+        grid-column-end: 2;
+        width: 160px;
     }
 </style>

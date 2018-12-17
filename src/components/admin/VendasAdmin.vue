@@ -4,31 +4,28 @@
             <input id="venda-nome" type="hidden" v-model="venda.nome"/>
             <b-row>
                 <b-col md="6" sm="12">
-                    <b-form-group label="Id:" label-for="venda-id">
-                        <b-form-input id="venda-id" type="text" v-model="venda.nome" required :readonly="mode === 'remove'" 
+                    <b-form-group label="Id:" label-for="venda-id" v-if="mode === 'save'">
+                        <b-form-input id="venda-id" type="text" v-model="venda.numeroPedido" required :readonly="mode === 'remove'" 
                         placeholder="Informe o Id do venda..." />
                     </b-form-group>
                 </b-col>
             </b-row>
             <b-row>
                 <b-col md="3" sm="2">
-                    <b-form-group label="Produtos:" label-for="venda-produtos">
-                        <b-form-input id="venda-produtos" type="text" v-model="venda.categoria" required :readonly="mode === 'remove'" 
-                        placeholder="Informe os Produtos da venda..." />
+                    <b-form-group label="Situação:" label-for="venda-situacao" v-if="mode === 'save'">
+                        <select id= "situacao" type="Dropdown Button" v-model="venda.situacao" required :readonly="mode === 'remove'">
+                            <option v-for="option in situacoes" :key="option.text">{{option.text}}</option>
+                        </select>
                     </b-form-group>
                 </b-col>
             </b-row>
             <b-row>
-                <b-col md="3" sm="2">
-                    <b-form-group label="Valor Total:" label-for="venda-valorTotal">
-                        <b-form-input id="venda-valorTotal" type="text" v-model="venda.preco" required :readonly="mode === 'remove'" 
-                        placeholder="Valor total sera calculado..." />
-                    </b-form-group>
+                <b-col md="3" sm="2" ref="detalhes">
                 </b-col>
             </b-row>
+            <b-button variant="primary" v-if="mode === 'none'" @click="adicionaPedido">Realizar Venda</b-button>
             <b-button variant="primary" v-if="mode === 'save'" @click="save">Salvar</b-button>
-            <b-button variant="danger" v-if="mode === 'remove'" @click="remove">Excluir</b-button>
-            <b-button class="ml-2" @click="reset">Cancelar</b-button>
+            <b-button class="ml-2" v-if="mode === 'save'" @click="reset">Cancelar</b-button>
         </b-form>
         <hr>
         <b-table hover striped :items="vendas" :fields="fields">
@@ -36,28 +33,28 @@
                 <b-button variant="warning" @click="loadVenda(data.item)" class="mr-2">
                     <i class="fa fa-pencil"></i>
                 </b-button>
-                <b-button variant="danger" @click="loadVenda(data.item, 'remove')">
-                    <i class="fa fa-trash"></i>
-                </b-button>
             </template>
         </b-table>
     </div>
 </template>
 
 <script>
-import { baseApiUrl, showError } from '@/global'
+import { baseApiUrl, showErro, axios} from '@/global'
 
 export default {
     nome:'VendasAdmin',
     data: function() {
         return {
-            mode: 'save',
+            mode: 'none',
             venda: {},
             vendas: [],
+            situacoes: [{text: "Entregue", id:1}, {text: "Não entregue", id:2}],
+            detalhes: "",
             fields: [
-                { key: 'id', label: 'Id', sortable: true},
-                { key: 'produtos', label: 'Produtos', sortable: true},
-                { key: 'valorTotal', label: 'valorTotal', sortable: true},
+                { key: 'numeroPedido', label: 'Id', sortable: true},
+                { key: 'situacao', label: 'Situacao', sortable: true},
+                { key: 'dataEmissao', label: 'Data de Emissão', sortable: true},
+                { key: 'precoTotal', label: 'Valor Total', sortable: true},
                 { key: 'actions', label: 'Ações'}
 
             ]
@@ -66,53 +63,61 @@ export default {
     methods: {
         loadVendas() {
             
-            return this.vendas;
+            this.vendas = []
+            this.$refs.detalhes.innerHTML = "";
 
+            axios.get("https://farmacia-cg.herokuapp.com/protected/pedidos").then(res => {
+                res.data.forEach((data) => {
+                    this.vendas.push(data);
+                })
+            })
+        },
+
+        adicionaPedido(){
+            this.$router.push({ path: '/'});
         },
 
         reset() {
             
-            this.mode = 'save'
+            this.mode = 'none'
             this.venda = {}
             this.loadVendas()
         },
 
         save() {
-            var existe = false;
-            Array.prototype.insert = function ( index, item ) {
-                this.splice( index, 0, item );
-            };
-
-            var a = Number;
-            this.vendas.forEach(element => { 
-                if(element.id == this.venda.id){
-                    existe = true;
-                    a = this.vendas.indexOf(element);
-                    this.vendas.splice(a, 1);
-                }
-            });
-            if(!existe) {
-                this.vendas.push(this.venda);
-            } else {
-               this.vendas.insert(a, this.venda)
-            }
-        
+            axios({
+                    method: "put",
+                    url: "https://farmacia-cg.herokuapp.com/protected/pedidos/" + this.venda.numeroPedido,
+                    data: this.venda
+                 })
+                 .then(() => alert("Alteração realizada com sucesso!"))
+                 .catch(() => alert("Aconteceu algum erro na requisição :("))
             this.reset();
         },
 
         remove() {
-            this.vendas.forEach(element => { 
-                if(element.codigo == this.venda.codigo){
-                    this.vendas.splice(this.vendas.indexOf(element), 1);
-                }
-             });
             this.reset();
-
         },
+
         loadVenda(venda, mode = 'save') {
             this.mode = mode
             this.venda = { ...venda }
+            this.printOrder(venda);
+        },
+
+        printOrder(venda){
+            let order  = "Detalhes do pedido: \n\n";
+
+            venda.itens.forEach((item) => {
+                order += `${item.itemPK.produto.nome} - quantidade: ${item.quantidade} - preço: R$${item.precoTotal}\n`
+            })
+
+            order += `\nCadastrado por: ${venda.usuario.username}\nPreço total: R$${venda.precoTotal}`
+
+            this.$refs.detalhes.innerText = order + "\n\n";
         }
+
+       
 
     },
     mounted() {
