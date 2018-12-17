@@ -8,7 +8,7 @@
                     <h1 class="title1">Ítens faltantes</h1>
                     <b-table hover striped :items="faltantes" :fields="fields"></b-table>
                 </b-modal>
-                    
+
         </div>
         <h1 class="title">
             <router-link to="/">{{ title }}</router-link>
@@ -32,7 +32,7 @@ export default {
             fields: [
                 { key: 'nome', label: 'Nome', sortable: true},
                 { key: 'precoPromocional', label: 'Preço', sortable: true},
-            
+
 
             ]
         }
@@ -61,10 +61,11 @@ export default {
                     this.produtos.push(data.produto)
                     }
                     else {
+                        data.produto.precoPromocional = "Em falta!"
                         this.faltantes.push(data.produto)
                     }
                 })
-            }) 
+            })
         }
     },
     mounted() {
@@ -114,7 +115,7 @@ export default {
 
     header.header > a.toggle:hover {
         color: #fff;
-        background-color: rgba(0,0,0, 0.2); 
+        background-color: rgba(0,0,0, 0.2);
     }
 
     #modal1 {
@@ -123,7 +124,7 @@ export default {
         width: -webkit-fill-available;
     }
 
-    .title1{ 
+    .title1{
         font-size: 1.5rem;
     }
 
