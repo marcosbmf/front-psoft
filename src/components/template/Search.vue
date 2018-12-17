@@ -2,7 +2,7 @@
     <div id="search">
         <label class="tabela">
             <label class="control-label">Search</label>
-            <input class="form-control" placeholder="Digite seu medicamento aqui..." 
+            <input class="form-control" placeholder="Nome do produto" 
             v-model="query"/>
         </label>
         <table class="tabela fundo table table-striped table-bordered table-condensed table-hover"
@@ -25,7 +25,7 @@
         <div id="compra">
             <table id="lista">
                 <thead>
-                    <th>Sua lista aqui...</th>
+                    <th>Seu carrinho:</th>
                 </thead>
                 <tbody id="lista">
                     <tr>
@@ -36,7 +36,7 @@
             <b-button @click="venda" v-if="aparece">Comprar</b-button>
         </div>
         <router-link to="/pedidos">
-            <b-button class="pedido">Visualizar Pedidos</b-button>
+            <b-button class="pedido">Visualizar pedidos</b-button>
         </router-link>		
     </div>
 </template>
@@ -71,7 +71,7 @@ export default {
                 this.produtosCompra.push({produto: elem.produto, quantidade: quantity});
             }
             else {
-                this.$toasted.global.defaultSuccess({msg: "Elemento em falta... /:"});
+                this.$toasted.global.defaultSuccess({msg: "Produto em falta!"});
             }
         },
         compra() {
