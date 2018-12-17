@@ -1,11 +1,11 @@
 <template>
     <header class="header">
         <div>
-            <b-btn v-if="hideItens" v-b-modal.modal1 id="modal1">Ítens disponíveis</b-btn>
+            <b-btn v-if="hideItens" v-b-modal.modal1 id="modal1">Produtos disponíveis</b-btn>
                 <b-modal id="modal1">
-                    <h1 class="title1">Ítens disponíveis para compra</h1>
+                    <h1 class="title1">Produtos disponíveis para compra</h1>
                     <b-table hover striped :items="produtos" :fields="fields"></b-table>
-                    <h1 class="title1">Ítens faltantes</h1>
+                    <h1 class="title1">Produtos em falta</h1>
                     <b-table hover striped :items="faltantes" :fields="fields"></b-table>
                 </b-modal>
 
@@ -57,7 +57,7 @@ export default {
             axios.get("https://farmacia-cg.herokuapp.com/public/produtos").then(res => {
                 res.data.forEach((data) => {
                     data.produto.precoPromocional = data.precoPromocional
-                    if(data.quantidadeDisponivel > 15) {
+                    if(data.quantidadeDisponivel > 0) {
                     this.produtos.push(data.produto)
                     }
                     else {

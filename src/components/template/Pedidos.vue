@@ -7,10 +7,10 @@
             <ul class="tiraAdmin" v-else>
                 <li v-for="pedido in pedidos" :key="pedido.id">
                     <span v-if="pedido.situacao === 'Não entregue'" >
-                        O pedido {{pedido.numeroPedido}} ainda não está entregue, uma pena /:
+                        O pedido #{{pedido.numeroPedido}} ainda não foi entregue.
                     </span>
                     <span v-else>
-                        O pedido {{pedido.numeroPedido}} foi entregue!!! Yeap :)
+                        Pedido #{{pedido.numeroPedido}} entregue.
                     </span>
                 </li>
             </ul>
